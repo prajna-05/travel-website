@@ -1,0 +1,90 @@
+main {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+section {
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 30%;
+    box-sizing: border-box;
+}
+
+section h2 {
+    font-size: 24px;
+    color: #2C3E50;
+}
+
+section p {
+    color: #7f8c8d;
+}
+
+section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+section ul li {
+    margin: 10px 0;
+}
+
+section strong {
+    display: block;
+    margin-top: 10px;
+    color: #e74c3c;
+}
+
+button {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #3498db;
+}
+.image-container {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  /* Initially show the first image */
+  .image-container .image1 {
+    opacity: 1;
+  }
+
+  /* Show images on hover with a delay */
+  .image-container:hover .image1 {
+    opacity: 1;
+  }
+
+  .image-container:hover .image2 {
+    opacity: 1;
+    transition-delay: 0.5s;
+  }
+
+  .image-container:hover .image3 {
+    opacity: 1;
+    transition-delay: 3s;
+  }

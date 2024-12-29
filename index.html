@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="header.css">
+    <title>Book My Trip - Home</title>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <a href="index.html">
+              <img src="logo.png" alt="Book My Trip Logo" class="logo">
+            </a>
+        </div>
+        <div class="links">
+            <a href="index.html">Home</a>
+            <a href="search.html">Bookings</a>
+            <a href="account.html">My Account</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="about.html">About Us</a>
+        </div>
+    </header>
+    <main>
+        <section id="idx">
+            <video autoplay loop muted id="bg-video">
+                <source src="bg.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="idx-content">
+                <h2>Find Your Next Adventure</h2>
+                <input type="text" id="destination" placeholder="Enter destination" required>
+                <button id="searchBtn" onclick="searchDestination(event)">Search</button>
+            </div>
+        </section>
+        <section id="featured">
+            <h2>Featured Destinations</h2>
+            <div class="destination" style="background-image: url('paris.jpg'); background-size: cover; background-position: center; color: rgb(0, 0, 0);">
+                <h3>Paris</h3>
+                <p>Experience the city of lights.</p>
+            </div>
+            <div class="destination" style="background-image: url('nyc.jpg'); background-size: cover; background-position: center; color: rgb(255, 239, 239);">
+                <h3>New York</h3>
+                <p>The city that never sleeps.</p>
+            </div>
+            <div class="destination" style="background-image: url('tokyo.jpg'); background-size: cover; background-position: center; color: rgb(240, 233, 233);">
+                <h3>Tokyo</h3>
+                <p>A blend of tradition and modernity.</p>
+            </div>
+            <div class="destination dubai" style="background-image: url('dubai.jpg'); background-size: cover; background-position: center; color: rgb(240, 233, 233);">
+                <h3>Dubai</h3>
+                <p>Discover the luxury of the Middle East.</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <small>&copy; 2023 Book My Trip. All rights reserved</small>
+        <address> visit us:
+           opposite to Nexus mall
+            koramangala,banglore
+        </address>
+    </footer>
+    <script>
+       function searchDestination(event) {
+            event.preventDefault(); // Prevents form from reloading the page
+
+            const destination = document.getElementById('destination').value;
+
+            
+            if (destination) {
+                const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(destination)}`;
+                window.location.href = googleSearchUrl; // Redirects to Google search
+            } else {
+                alert('Please enter a destination to search.');
+            }
+        }
+    </script>
+</body>
+</html>

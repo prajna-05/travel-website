@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Booking Confirmation</title>
+</head>
+<body>
+   
+
+    <section id="confirmation-section">
+        <h2>Booking Confirmation</h2>
+        <div id="confirmation-details">
+            <p><strong>Reference ID:</strong> <span id="reference-id"></span></p>
+            <p><strong>Destination:</strong> <span id="destination"></span></p>
+            <p><strong>Number of People:</strong> <span id="num-people"></span></p>
+            <p><strong>Booking Date:</strong> <span id="booking-date"></span></p>
+        </div>
+        <button onclick="goBack()">Go Back to Home</button>
+    </section>
+</main>
+
+<footer>
+    <small>&copy; 2023 Book My Trip. All rights reserved</small>
+    <address>Visit us: opposite to Nexus mall, Koramangala, Bangalore</address>
+</footer>
+
+<script>
+    // Function to get query parameters from the URL
+    function getQueryParams() {
+        const params = {};
+        const queryString = window.location.search.substring(1);
+        const regex = /([^&=]+)=([^&]*)/g;
+        let m;
+
+        while (m = regex.exec(queryString)) {
+            params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+        }
+        return params;
+    }
+
+    // Populate the confirmation details
+    function populateConfirmationDetails() {
+        const params = getQueryParams();
+        document.getElementById('reference-id').textContent = params.referenceId || 'N/A';
+        document.getElementById('destination').textContent = params.destination || 'N/A';
+        document.getElementById('num-people').textContent = params.numPeople || 'N/A';
+        document.getElementById('booking-date').textContent = params.bookingDate || 'N/A';
+    }
+
+    // Function to go back to the home page
+    function goBack() {
+        window.location.href = 'index.html';
+    }
+
+    // Call the function to populate confirmation details on page load
+    window.onload = populateConfirmationDetails;
+</script>
+</body>
+</html>

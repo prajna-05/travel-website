@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="header.css">
+    <title>Book My Trip - My Account</title>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="logo.png" alt="Book My Trip Logo" class="logo">
+            </a>
+        </div>
+        <div class="links">
+            <a href="index.html">Home</a>
+            <a href="search.html">Bookings</a>
+            <a href="account.html">My Account</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="about.html">About Us</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="account-section">
+            <h2>Login / Register</h2>
+            
+            <!-- Login Form -->
+            <div id="login-form">
+                <form id="loginForm">
+                    <label for="email-login">Email:</label>
+                    <input type="email" id="email-login" name="email" required placeholder="Enter your email"><br><br>
+                    <label for="password-login">Password:</label>
+                    <input type="password" id="password-login" name="password" required placeholder="Enter your password"><br><br>
+                    <button type="submit">Login</button><br><br>
+                </form>
+                <p>Don't have an account? <a href="#" onclick="showRegistrationForm()">Register here</a></p>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" style="display:none;">
+                <form id="registerForm">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name"><br><br>
+                    <label for="email-register">Email:</label>
+                    <input type="email" id="email-register" name="email" required placeholder="Enter your email"><br><br>
+                    <label for="password-register">Password:</label>
+                    <input type="password" id="password-register" name="password" required placeholder="Create a password"><br><br>
+                    <button type="submit">Register</button>
+                </form>
+                <p>Already have an account? <a href="#" onclick="showLoginForm()">Login here</a></p>
+            </div>
+
+            <!-- Booking Details Form (Initially hidden) -->
+            <div id="booking-details" style="display:none;">
+                <h3>Booking Details</h3>
+                <form id="booking-form">
+                    <label for="destination">Destination:</label>
+                    <input type="text" id="destination" name="destination" required placeholder="Enter destination"><br><br>
+
+                    <label for="num-people">Number of People:</label>
+                    <input type="number" id="num-people" name="num-people" required min="1"><br><br>
+
+                    <label for="booking-date">Date:</label>
+                    <input type="date" id="booking-date" name="booking-date" required><br><br>
+
+                    <button type="submit" id="confirmBookingBtn">Generate Reference ID</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <small>&copy; 2023 Book My Trip. All rights reserved</small>
+        <address>Visit us: opposite to Nexus mall, Koramangala, Bangalore</address>
+    </footer>
+
+    <script>
+        let authToken = '';  // Store JWT token here
+
+        // Show registration form
+        function showRegistrationForm() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        }
+
+        // Show login form
+        function showLoginForm() {
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+        }
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email-login').value;
+            const password = document.getElementById('password-login').value;
+
+            fetch('http://localhost:3000/api/user/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    authToken = data.token;  // Store the JWT token
+                    document.getElementById('login-form').style.display = 'none';
+                    document.getElementById('register-form').style.display = 'none';
+                    document.getElementById('booking-details').style.display = 'block';
+                } else {
+                    alert('Invalid credentials');
+                }
+            })
+            .catch(error => alert('Error: ' + error.message));
+        });
+
+        // Handle register form submission
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email-register').value;
+            const password = document.getElementById('password-register').value;
+
+            fetch('http://localhost:3000/api/user/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    authToken = data.token;  // Store the JWT token
+                    alert('Registration successful, please login!');
+                    showLoginForm();  // Show the login form after registration
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => alert('Error: ' + error.message));
+        });
+
+        // Handle Booking form submission
+        document.getElementById('booking-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const destination = document.getElementById('destination').value;
+            const numPeople = document.getElementById('num-people').value;
+            const bookingDate = document.getElementById('booking-date').value;
+
+            // Send booking data with JWT token in headers
+            fetch('http://localhost:3000/api/user/book', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`  // Include the JWT token
+                },
+                body: JSON.stringify({ destination, numPeople, bookingDate })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Redirect to confirmation page with booking details
+                window.location.href = `confirm.html?referenceId=${encodeURIComponent(data.referenceId)}&destination=${encodeURIComponent(data.destination)}&numPeople=${encodeURIComponent(data.numPeople)}&bookingDate=${encodeURIComponent(data.bookingDate)}`;
+            })
+            .catch(error => alert('Error: ' + error.message));
+        });
+    </script>
+</body>
+</html>
